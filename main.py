@@ -16,18 +16,21 @@ import time
 
 
 
-
+# Initiate GigaChat
 gigaChat = GigaChat(credentials=APIKEY.SBER_AUTH, model='GigaChat:latest', verify_ssl_certs=False,
                     profanity_check=False, temperature=0.4, repetition_penalty=2.0, max_tokens=2500)
 
+
+# Fill both teams' history with pre-messages
 attacker_msgs = [SystemMessage(content=messages.attacker_sm), HumanMessage(content=messages.attacker_secret)]
 defender_msgs = [SystemMessage(content=messages.defender_sm), HumanMessage(content=messages.defender_secret)]
+
 
 attacker_log = colored('Команда нападающих: ', 'red')
 defender_log = colored('Команда защитников: ', 'green')
 
 
-# Add first message to sphere earther message
+# Add first message to defenders to kick-off the chat
 defender_msgs.append(HumanMessage(content=messages.start_m))
 
 print(attacker_log, defender_msgs[-1].content, '\n')
@@ -39,7 +42,7 @@ time.sleep(0.5)
 
 
 while True:
-    attacker_answ = gigaChat(defender_msgs)     # Защитник
+    attacker_answ = gigaChat(defender_msgs)     # Attacker (the one who starts the dialogue)
 
     print(defender_log, attacker_answ.content)
     chat_log.log_to_file('Команда защитников: ' + attacker_answ.content)
@@ -52,7 +55,7 @@ while True:
 
 
 
-    defender_answ = gigaChat(attacker_msgs)       # Нападающий
+    defender_answ = gigaChat(attacker_msgs)       # Defender (the one who continues it)
 
     print(attacker_log, defender_answ.content)
     chat_log.log_to_file('Команда атакающих: ' + defender_answ.content)

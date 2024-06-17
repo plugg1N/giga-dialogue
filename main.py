@@ -26,15 +26,15 @@ attacker_msgs = [SystemMessage(content=messages.attacker_sm), HumanMessage(conte
 defender_msgs = [SystemMessage(content=messages.defender_sm), HumanMessage(content=messages.defender_secret)]
 
 
-attacker_log = colored('Команда нападающих: ', 'red')
-defender_log = colored('Команда защитников: ', 'green')
+attacker_log = colored('Команда 1: ', 'red')
+defender_log = colored('Команда 2: ', 'green')
 
 
 # Add first message to defenders to kick-off the chat
 defender_msgs.append(HumanMessage(content=messages.start_m))
 
 print(attacker_log, defender_msgs[-1].content, '\n')
-chat_log.log_to_file('Команда нападающих: ' + defender_msgs[-1].content)
+chat_log.log_to_file('Команда 1: ' + defender_msgs[-1].content)
 text_to_speech(defender_msgs[-1].content, voice='man')
 
 
@@ -45,7 +45,7 @@ while True:
     attacker_answ = gigaChat(defender_msgs)     # Attacker (the one who starts the dialogue)
 
     print(defender_log, attacker_answ.content)
-    chat_log.log_to_file('Команда защитников: ' + attacker_answ.content)
+    chat_log.log_to_file('Команда 2: ' + attacker_answ.content)
     text_to_speech(attacker_answ.content, voice='woman')
 
     defender_msgs.append(attacker_answ)
@@ -58,7 +58,7 @@ while True:
     defender_answ = gigaChat(attacker_msgs)       # Defender (the one who continues it)
 
     print(attacker_log, defender_answ.content)
-    chat_log.log_to_file('Команда атакающих: ' + defender_answ.content)
+    chat_log.log_to_file('Команда 1: ' + defender_answ.content)
     text_to_speech(defender_answ.content, voice='man')
 
 
